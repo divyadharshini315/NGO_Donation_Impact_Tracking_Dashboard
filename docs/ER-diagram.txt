@@ -1,0 +1,79 @@
+Table roles {
+  role_id int [pk, increment]
+  role_name varchar
+}
+
+Table users {
+  user_id int [pk, increment]
+  role_id int [ref: > roles.role_id]
+  full_name varchar
+  email varchar
+  password_hash varchar
+  phone varchar
+  address varchar
+}
+
+Table campaigns {
+  campaign_id int [pk, increment]
+  name varchar
+  description text
+  goal_amount decimal
+  start_date date
+  end_date date
+  status varchar
+  created_by int [ref: > users.user_id]
+}
+
+Table transactions {
+  transaction_id int [pk, increment]
+  payment_method varchar
+  transaction_reference varchar
+  transaction_date date
+  amount decimal
+  status varchar
+}
+
+Table donations {
+  donation_id int [pk, increment]
+  donor_id int [ref: > users.user_id]
+  campaign_id int [ref: > campaigns.campaign_id]
+  transaction_id int [ref: > transactions.transaction_id]
+  amount decimal
+  donation_date date
+  payment_status varchar
+}
+
+Table beneficiaries {
+  beneficiary_id int [pk, increment]
+  name varchar
+  category varchar
+  contact_info varchar
+  address varchar
+}
+
+Table campaign_beneficiaries {
+  campaign_id int [ref: > campaigns.campaign_id]
+  beneficiary_id int [ref: > beneficiaries.beneficiary_id]
+  support_received varchar
+}
+
+Table fund_utilizations {
+  expense_id int [pk, increment]
+  campaign_id int [ref: > campaigns.campaign_id]
+  item_name varchar
+  amount decimal
+  expense_date date
+  recorded_by int [ref: > users.user_id]
+  description text
+}
+
+Table impact_records {
+  impact_id int [pk, increment]
+  campaign_id int [ref: > campaigns.campaign_id]
+  beneficiary_id int [ref: > beneficiaries.beneficiary_id]
+  impact_type varchar
+  quantity int
+  unit varchar
+  recorded_date date
+  recorded_by int [ref: > users.user_id]
+}
