@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="System Architecture" id="Fy7X-oTcH4naKb1tKqMY">
+    <mxGraphModel dx="1144" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0FklfmuwRe9TckF2Fdep-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Client Layer (Admin/Donor/Beneficiary Browser)" vertex="1">
+          <mxGeometry height="60" width="320" x="170" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Controller Layer (REST API - Spring Boot)" vertex="1">
+          <mxGeometry height="60" width="320" x="170" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="Security Layer (Spring Security + JWT)" vertex="1">
+          <mxGeometry height="60" width="260" x="550" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Service Layer (Business Logic)" vertex="1">
+          <mxGeometry height="60" width="320" x="170" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Repository Layer (Spring Data JPA)" vertex="1">
+          <mxGeometry height="60" width="320" x="170" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-6" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="Database (MySQL / PostgreSQL)" vertex="1">
+          <mxGeometry height="80" width="240" x="210" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Payment Gateway (Razorpay/Stripe/UPI)" vertex="1">
+          <mxGeometry height="60" width="260" x="550" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Notification Service (Email/SMS)" vertex="1">
+          <mxGeometry height="60" width="260" x="550" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-9" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="0FklfmuwRe9TckF2Fdep-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-10" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="0FklfmuwRe9TckF2Fdep-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-11" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="0FklfmuwRe9TckF2Fdep-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-12" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="0FklfmuwRe9TckF2Fdep-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-13" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;" target="0FklfmuwRe9TckF2Fdep-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-14" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;" target="0FklfmuwRe9TckF2Fdep-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0FklfmuwRe9TckF2Fdep-15" edge="1" parent="1" source="0FklfmuwRe9TckF2Fdep-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;" target="0FklfmuwRe9TckF2Fdep-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
