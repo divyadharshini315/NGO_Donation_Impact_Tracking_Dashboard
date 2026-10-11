@@ -1,0 +1,3570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        NGO Donation & Impact Tracking Dashboard
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 25px auto;
+        }
+
+        .auth-container {
+            width: 430px;
+            max-width: 92%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            margin-top: 7px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            background: #198754;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .primary {
+            background: #0d6efd;
+        }
+
+        .danger {
+            background: #dc3545;
+        }
+
+        .warning {
+            background: #ffc107;
+            color: #222;
+        }
+
+        .full-button {
+            width: 100%;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background: #eef5ff;
+        }
+
+        .link-button {
+            background: none;
+            color: #198754;
+            padding: 0;
+            border: none;
+            font-weight: bold;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-header::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .logout {
+            float: right;
+            background: #dc3545;
+        }
+
+        .role {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: #e7f1ff;
+            color: #0d6efd;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .stat-card strong {
+            font-size: 25px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 15px 0;
+            background: white;
+        }
+
+        .card h3 {
+            color: #198754;
+        }
+
+        .empty {
+            color: #777;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .form-box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            background: #fafafa;
+        }
+
+        .success-message {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #842029;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        @media(max-width:800px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media(max-width:500px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-container {
+                margin-top: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<div id="loginPage"
+     class="auth-container">
+
+    <h1>
+        NGO Dashboard
+    </h1>
+
+    <p>
+        Login to manage donations and impact.
+    </p>
+
+    <div id="loginMessage"
+         class="message">
+    </div>
+
+    <label>
+        Email
+    </label>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter email">
+
+
+    <label>
+        Password
+    </label>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter password">
+
+
+    <button
+        class="primary full-button"
+        onclick="login()">
+
+        Login
+
+    </button>
+
+
+    <br>
+    <br>
+
+
+    <p style="text-align:center;">
+
+        Don't have an account?
+
+        <button
+            class="link-button"
+            onclick="showRegister()">
+
+            Register
+
+        </button>
+
+    </p>
+
+</div>
+
+
+
+<!-- =====================================================
+     REGISTER
+===================================================== -->
+
+<div id="registerPage"
+     class="auth-container"
+     style="display:none;">
+
+    <h1>
+        Create Account
+    </h1>
+
+    <p>
+        Register for NGO Dashboard
+    </p>
+
+    <div id="registerMessage"
+         class="message">
+    </div>
+
+
+    <label>
+        Name
+    </label>
+
+    <input
+        type="text"
+        id="registerName"
+        placeholder="Enter your name">
+
+
+    <label>
+        Email
+    </label>
+
+    <input
+        type="email"
+        id="registerEmail"
+        placeholder="Enter email">
+
+
+    <label>
+        Password
+    </label>
+
+    <input
+        type="password"
+        id="registerPassword"
+        placeholder="Create password">
+
+
+    <label>
+        Role
+    </label>
+
+    <select id="registerRole" onchange="toggleVolunteerRegistrationFields()">
+
+        <option value="DONOR">
+            Donor
+        </option>
+
+        <option value="VOLUNTEER">
+            Volunteer
+        </option>
+
+        <option value="HELP_SEEKER">
+            Help Seeker
+        </option>
+
+<option value="ADMIN">
+    Admin
+</option>
+    </select>
+
+    <div id="volunteerRegistrationFields" style="display:none;">
+
+        <label>Phone Number</label>
+        <input type="tel" id="registerPhone" placeholder="Enter phone number">
+
+        <label>Address</label>
+        <textarea id="registerAddress" placeholder="Enter your address"></textarea>
+
+        <label>Skills</label>
+        <input type="text" id="registerSkills" placeholder="e.g. Teaching, First Aid, Event Management">
+
+        <label>Availability</label>
+        <select id="registerAvailability">
+            <option value="">Select availability</option>
+            <option value="Weekdays">Weekdays</option>
+            <option value="Weekends">Weekends</option>
+            <option value="Evenings">Evenings</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Flexible">Flexible</option>
+        </select>
+
+    </div>
+
+
+    <button
+        class="warning full-button"
+        onclick="sendOTP()">
+
+        Send OTP
+
+    </button>
+
+
+    <br>
+    <br>
+
+
+    <label>
+        OTP
+    </label>
+
+    <input
+        type="text"
+        id="registerOTP"
+        placeholder="Enter OTP">
+
+
+    <button
+        class="primary full-button"
+        onclick="registerUser()">
+
+        Register
+
+    </button>
+
+
+    <br>
+    <br>
+
+
+    <p style="text-align:center;">
+
+        Already have an account?
+
+        <button
+            class="link-button"
+            onclick="showLogin()">
+
+            Login
+
+        </button>
+
+    </p>
+
+</div>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div id="dashboard"
+     class="container"
+     style="display:none;">
+
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <button
+            class="logout"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+
+        <h1>
+
+            Welcome,
+            <span id="welcomeName">
+                User
+            </span>
+
+            👋
+
+        </h1>
+
+
+        <p>
+
+            <span
+                id="userRole"
+                class="role">
+            </span>
+
+        </p>
+
+
+        <p>
+
+            Manage donations,
+            campaigns,
+            beneficiaries and
+            impact reports in one place.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================= -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Donations
+            </h3>
+
+            <strong id="totalDonations">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Active Campaigns
+            </h3>
+
+            <strong id="activeCampaigns">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Beneficiaries
+            </h3>
+
+            <strong id="totalBeneficiaries">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Volunteers
+            </h3>
+
+            <strong id="totalVolunteers">
+                0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         CAMPAIGNS
+    ================================================= -->
+
+    <div class="section"
+         id="campaignsSection">
+
+        <h2>
+            Campaigns
+        </h2>
+
+        <!-- CREATE CAMPAIGN - ADMIN ONLY -->
+        <div id="createCampaignBox"
+             class="form-box hidden">
+
+            <h3>
+                Create Campaign
+            </h3>
+
+            <label>
+                Campaign Title
+            </label>
+
+            <input
+                type="text"
+                id="campaignTitle"
+                placeholder="Campaign title">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                id="campaignDescription"
+                placeholder="Campaign description">
+            </textarea>
+
+            <label>
+                Target Amount
+            </label>
+
+            <input
+                type="number"
+                id="campaignTargetAmount"
+                placeholder="Enter target amount"
+                min="1">
+
+            <label>
+                Status
+            </label>
+
+            <select id="campaignStatus">
+
+                <option value="ACTIVE">
+                    ACTIVE
+                </option>
+
+                <option value="INACTIVE">
+                    INACTIVE
+                </option>
+
+                <option value="COMPLETED">
+                    COMPLETED
+                </option>
+
+            </select>
+
+            <button
+                class="primary full-button"
+                onclick="createCampaign()">
+
+                Create Campaign
+
+            </button>
+
+        </div>
+
+        <div id="campaigns">
+
+            <p class="empty">
+                Loading campaigns...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DONATION
+    ================================================= -->
+
+    <div class="section"
+         id="donationSection">
+
+        <h2>
+            Make a Donation
+        </h2>
+
+
+        <label>
+            Select Campaign
+        </label>
+
+        <select id="donationCampaign">
+
+            <option value="">
+                Select Campaign
+            </option>
+
+        </select>
+
+
+        <label>
+            Amount
+        </label>
+
+        <input
+            type="number"
+            id="donationAmount"
+            placeholder="Enter amount">
+
+
+        <button
+            onclick="makeDonation()">
+
+            Donate
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DONATION HISTORY
+    ================================================= -->
+
+    <div class="section"
+         id="donationHistorySection">
+
+        <h2>
+            Donation History
+        </h2>
+
+        <div id="donationHistory">
+
+            <p class="empty">
+                Loading...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         BENEFICIARIES
+    ================================================= -->
+
+    <div class="section"
+         id="beneficiariesSection">
+
+        <h2>
+            Beneficiaries
+        </h2>
+
+
+        <!-- EXISTING BENEFICIARIES -->
+
+        <div id="beneficiaries">
+
+            <p class="empty">
+                Loading...
+            </p>
+
+        </div>
+
+
+        <!-- ADD BENEFICIARY -->
+
+        <div class="form-box">
+
+            <h3>
+                Add Beneficiary
+            </h3>
+
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="beneficiaryName"
+                placeholder="Beneficiary name">
+
+
+            <label>
+                Contact
+            </label>
+
+            <input
+                type="text"
+                id="beneficiaryContact"
+                placeholder="Contact">
+
+
+            <label>
+                Campaign
+            </label>
+
+            <select id="beneficiaryCampaign">
+
+                <option value="">
+                    Select Campaign
+                </option>
+
+            </select>
+
+
+            <label>
+                Details
+            </label>
+
+            <textarea
+                id="beneficiaryDetails"
+                placeholder="Beneficiary details">
+            </textarea>
+
+
+            <button
+                onclick="addBeneficiary()">
+
+                Add Beneficiary
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FUND UTILIZATION
+    ================================================= -->
+
+    <div class="section"
+         id="fundUtilizationSection">
+
+        <h2>
+            Fund Utilization
+        </h2>
+
+
+        <label>
+            Select Campaign
+        </label>
+
+        <select id="fundCampaign">
+
+            <option value="">
+                Select Campaign
+            </option>
+
+        </select>
+
+
+        <label>
+            Amount Used
+        </label>
+
+        <input
+            type="number"
+            id="fundAmount"
+            placeholder="Amount used">
+
+
+        <label>
+            Purpose
+        </label>
+
+        <input
+            id="fundPurpose"
+            placeholder="Medical Support">
+
+
+        <label>
+            Description
+        </label>
+
+        <textarea
+            id="fundDescription"
+            placeholder="Description">
+        </textarea>
+
+
+        <button
+            onclick="addFundUtilization()">
+
+            Add Fund Utilization
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FUND HISTORY
+    ================================================= -->
+
+    <div class="section"
+         id="fundHistorySection">
+
+        <h2>
+            Fund Utilization History
+        </h2>
+
+        <div id="fundHistory">
+
+            <p class="empty">
+                Loading...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         IMPACT REPORTS
+         CREATE FORM FIRST
+         RECORDS BELOW
+    ================================================= -->
+
+    <div class="section"
+         id="impactReportsSection">
+
+        <h2>
+            Impact Reports
+        </h2>
+
+
+        <!-- CREATE IMPACT REPORT FIRST -->
+
+        <div class="form-box" id="impactCreateBox">
+
+            <h3>
+                Create Impact Report
+            </h3>
+
+
+            <label>
+                Select Campaign
+            </label>
+
+            <select id="impactCampaign">
+
+                <option value="">
+                    Select Campaign
+                </option>
+
+            </select>
+
+
+            <label>
+                Report Title
+            </label>
+
+            <input
+                type="text"
+                id="impactTitle"
+                placeholder="Report Title">
+
+
+            <label>
+                Impact Summary
+            </label>
+
+            <textarea
+                id="impactSummary"
+                placeholder="Impact Summary">
+            </textarea>
+
+
+            <label>
+                Beneficiaries Reached
+            </label>
+
+            <input
+                type="number"
+                id="impactBeneficiaries"
+                placeholder="Beneficiaries Reached"
+                min="0">
+
+
+            <label>
+                Activities Conducted
+            </label>
+
+            <textarea
+                id="impactActivities"
+                placeholder="Activities Conducted">
+            </textarea>
+
+
+            <button
+                class="full-button"
+                onclick="createImpactReport()">
+
+                Create Impact Report
+
+            </button>
+
+        </div>
+
+
+        <!-- GENERATED RECORDS BELOW -->
+
+        <h3 style="margin-top:30px;">
+
+            Generated Impact Reports
+
+        </h3>
+
+
+        <div id="impactReports">
+
+            <p class="empty">
+                Loading impact reports...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         HELP REQUESTS
+    ================================================= -->
+
+    <div class="section" id="helpRequestsSection" style="display:none;">
+        <h2>Help Requests</h2>
+
+        <!-- HELP SEEKER FORM -->
+        <div id="helpRequestFormBox" class="form-box hidden">
+            <h3>Request Help</h3>
+            <label>Name</label>
+            <input type="text" id="helpRequestName" placeholder="Enter your name">
+            <label>Phone</label>
+            <input type="text" id="helpRequestPhone" placeholder="Enter phone number">
+            <label>Type of Help</label>
+            <select id="helpRequestType">
+                <option value="">Select help type</option>
+                <option value="Food">Food</option>
+                <option value="Medical">Medical</option>
+                <option value="Education">Education</option>
+                <option value="Shelter">Shelter</option>
+                <option value="Financial">Financial</option>
+                <option value="Other">Other</option>
+            </select>
+            <label>Reason</label>
+            <textarea id="helpRequestReason" placeholder="Why do you need help?"></textarea>
+            <label>Additional Details</label>
+            <textarea id="helpRequestDetails" placeholder="Add any important details"></textarea>
+            <button class="primary full-button" onclick="submitHelpRequest()">Submit Help Request</button>
+        </div>
+
+        <!-- HELP SEEKER'S OWN REQUESTS -->
+        <div id="myHelpRequestsBox" class="hidden">
+            <h3>My Help Requests and Status</h3>
+            <button class="primary" onclick="loadMyHelpRequests()">Refresh My Requests</button>
+            <div id="myHelpRequests"><p class="empty">Your requests will appear here.</p></div>
+        </div>
+
+        <!-- VOLUNTEER / ADMIN REQUEST LIST -->
+        <div id="manageHelpRequestsBox" class="hidden">
+            <button class="primary" onclick="loadHelpRequests()">Refresh Help Requests</button>
+            <div id="helpRequestsList"><p class="empty">Loading help requests...</p></div>
+        </div>
+    </div>
+
+
+    <!-- =================================================
+         VOLUNTEERS
+    ================================================= -->
+
+    <div class="section"
+         id="volunteersSection">
+
+        <h2>
+            Volunteers
+        </h2>
+
+        <div id="volunteers">
+
+            <p class="empty">
+                Loading...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         USER MANAGEMENT
+    ================================================= -->
+
+    <div class="section"
+         id="userManagementSection">
+
+        <h2>
+            User Management
+        </h2>
+
+        <div id="users">
+
+            <p class="empty">
+                Loading users...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+let currentUser = null;
+
+
+
+/* =====================================================
+   SHOW LOGIN
+===================================================== */
+
+function showLogin() {
+
+    document.getElementById(
+        "registerPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "loginPage"
+    ).style.display = "block";
+
+}
+
+
+
+/* =====================================================
+   SHOW REGISTER
+===================================================== */
+
+function showRegister() {
+
+    document.getElementById(
+        "loginPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "registerPage"
+    ).style.display = "block";
+
+    toggleVolunteerRegistrationFields();
+
+}
+
+
+function toggleVolunteerRegistrationFields() {
+
+    const roleElement = document.getElementById("registerRole");
+    const volunteerFields = document.getElementById("volunteerRegistrationFields");
+    if (roleElement && volunteerFields) {
+        volunteerFields.style.display =
+            roleElement.value === "VOLUNTEER" ? "block" : "none";
+    }
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function money(value) {
+
+    return "₹" +
+        Number(value || 0)
+            .toLocaleString("en-IN");
+
+}
+
+
+
+/* =====================================================
+   SEND OTP
+===================================================== */
+
+async function sendOTP() {
+
+    const email =
+        document.getElementById(
+            "registerEmail"
+        ).value.trim();
+
+
+    if (!email) {
+
+        document.getElementById(
+            "registerMessage"
+        ).innerText =
+            "Please enter email first.";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/otp/send?email=" +
+                encodeURIComponent(email),
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const result =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            document.getElementById(
+                "registerMessage"
+            ).innerText =
+                "Failed to send OTP: " +
+                result;
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "registerMessage"
+        ).innerText =
+            "OTP sent successfully. Please check your email.";
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "registerMessage"
+        ).innerText =
+            "Failed to send OTP.";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
+
+async function registerUser() {
+
+    const name =
+        document.getElementById(
+            "registerName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "registerEmail"
+        ).value.trim();
+
+
+    const password =
+        document.getElementById(
+            "registerPassword"
+        ).value;
+
+
+    const role =
+        document.getElementById(
+            "registerRole"
+        ).value;
+
+
+    const otp =
+        document.getElementById(
+            "registerOTP"
+        ).value.trim();
+
+    const phone = document.getElementById("registerPhone").value.trim();
+    const address = document.getElementById("registerAddress").value.trim();
+    const skills = document.getElementById("registerSkills").value.trim();
+    const availability = document.getElementById("registerAvailability").value;
+
+    if (
+        !name ||
+        !email ||
+        !password ||
+        !role ||
+        !otp ||
+        (role === "VOLUNTEER" && (!phone || !address || !skills || !availability))
+    ) {
+
+        document.getElementById(
+            "registerMessage"
+        ).innerText =
+            "Please fill all fields.";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/register",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        name: name,
+
+                        email: email,
+
+                        password: password,
+
+                        role: role,
+
+                        otp: otp,
+
+                        phone: role === "VOLUNTEER" ? phone : null,
+
+                        address: role === "VOLUNTEER" ? address : null,
+
+                        skills: role === "VOLUNTEER" ? skills : null,
+
+                        availability: role === "VOLUNTEER" ? availability : null
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            document.getElementById(
+                "registerMessage"
+            ).innerText =
+                result;
+
+            return;
+
+        }
+
+
+        alert(
+            "Registration successful! Please login."
+        );
+
+
+        document.getElementById(
+            "registerName"
+        ).value = "";
+
+
+        document.getElementById(
+            "registerEmail"
+        ).value = "";
+
+
+        document.getElementById(
+            "registerPassword"
+        ).value = "";
+
+
+        document.getElementById(
+            "registerOTP"
+        ).value = "";
+
+        document.getElementById("registerPhone").value = "";
+        document.getElementById("registerAddress").value = "";
+        document.getElementById("registerSkills").value = "";
+        document.getElementById("registerAvailability").value = "";
+        document.getElementById("registerRole").value = "DONOR";
+        toggleVolunteerRegistrationFields();
+
+        showLogin();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "registerMessage"
+        ).innerText =
+            "Registration failed.";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+async function login() {
+
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+
+    if (!email || !password) {
+
+        document.getElementById(
+            "loginMessage"
+        ).innerText =
+            "Please enter email and password.";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        email: email,
+
+                        password: password
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const error =
+                await response.text();
+
+            document.getElementById(
+                "loginMessage"
+            ).innerText =
+                error;
+
+            return;
+
+        }
+
+
+        currentUser =
+            await response.json();
+
+
+        document.getElementById(
+            "loginPage"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "registerPage"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "dashboard"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "welcomeName"
+        ).innerText =
+            currentUser.name ||
+            "User";
+
+
+        const normalizedRole = String(currentUser.role || "").toUpperCase();
+
+        document.getElementById(
+            "userRole"
+        ).innerText = "ROLE: " + normalizedRole;
+
+        const dashboardDescription = document.querySelector(".dashboard-header > p:last-of-type");
+        if (dashboardDescription) {
+            dashboardDescription.innerText = normalizedRole === "HELP_SEEKER"
+                ? "Request help and track the status of your requests."
+                : "Manage donations, campaigns, beneficiaries and impact reports in one place.";
+        }
+
+        await loadDashboard();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "loginMessage"
+        ).innerText =
+            "Unable to connect to server.";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    currentUser = null;
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginPage"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "email"
+    ).value = "";
+
+
+    document.getElementById(
+        "password"
+    ).value = "";
+
+
+    document.getElementById(
+        "loginMessage"
+    ).innerText = "";
+
+}
+
+
+
+/* =====================================================
+   ROLE ACCESS
+===================================================== */
+
+function applyRoleAccess(role) {
+
+    role = String(role || "").toUpperCase();
+
+    const sections = [
+        "campaignsSection",
+        "donationSection",
+        "donationHistorySection",
+        "beneficiariesSection",
+        "fundUtilizationSection",
+        "fundHistorySection",
+        "impactReportsSection",
+        "helpRequestsSection",
+        "volunteersSection",
+        "userManagementSection"
+    ];
+
+    // Always hide every role-specific section first.
+    sections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.style.display = "none";
+    });
+
+    // Hide all role-specific help request panels first too.
+    const helpRequestFormBox = document.getElementById("helpRequestFormBox");
+    const myHelpRequestsBox = document.getElementById("myHelpRequestsBox");
+    const manageHelpRequestsBox = document.getElementById("manageHelpRequestsBox");
+    if (helpRequestFormBox) helpRequestFormBox.classList.add("hidden");
+    if (myHelpRequestsBox) myHelpRequestsBox.classList.add("hidden");
+    if (manageHelpRequestsBox) manageHelpRequestsBox.classList.add("hidden");
+
+    const createCampaignBox = document.getElementById("createCampaignBox");
+    if (createCampaignBox) createCampaignBox.classList.add("hidden");
+
+    const impactCreateBox = document.getElementById("impactCreateBox");
+    if (impactCreateBox) impactCreateBox.style.display = "none";
+
+    // Help Seeker: only submit a help request and view their own requests/status.
+    if (role === "HELP_SEEKER") {
+        showSection("helpRequestsSection");
+        if (helpRequestFormBox) helpRequestFormBox.classList.remove("hidden");
+        if (myHelpRequestsBox) myHelpRequestsBox.classList.remove("hidden");
+        const helpNameInput = document.getElementById("helpRequestName");
+        if (helpNameInput) helpNameInput.value = currentUser?.name || "";
+        return;
+    }
+
+    // Campaigns are visible to Admin, Donor and Volunteer, not Help Seeker.
+    if (["ADMIN", "DONOR", "VOLUNTEER"].includes(role)) {
+        showSection("campaignsSection");
+    }
+    if (createCampaignBox && role === "ADMIN") {
+        createCampaignBox.classList.remove("hidden");
+    }
+
+    // Impact reports can be viewed by Admin, Donor and Volunteer only.
+    if (["ADMIN", "DONOR", "VOLUNTEER"].includes(role)) {
+        showSection("impactReportsSection");
+    }
+    if (impactCreateBox && role === "ADMIN") {
+        impactCreateBox.style.display = "block";
+    }
+
+    // Help-request management is for Admin/Volunteer only.
+    if (["ADMIN", "VOLUNTEER"].includes(role)) {
+        showSection("helpRequestsSection");
+        if (manageHelpRequestsBox) manageHelpRequestsBox.classList.remove("hidden");
+        loadHelpRequests();
+    }
+
+    if (role === "DONOR") {
+        showSection("donationSection");
+        showSection("donationHistorySection");
+    } else if (role === "VOLUNTEER") {
+        showSection("beneficiariesSection");
+        showSection("volunteersSection");
+    } else if (role === "ADMIN") {
+        showSection("donationSection");
+        showSection("donationHistorySection");
+        showSection("beneficiariesSection");
+        showSection("fundUtilizationSection");
+        showSection("fundHistorySection");
+        showSection("volunteersSection");
+        showSection("userManagementSection");
+    }
+}
+
+
+function showSection(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.style.display =
+            "block";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOAD DASHBOARD
+===================================================== */
+
+async function loadDashboard() {
+
+    const role =
+        String(
+            currentUser?.role || "DONOR"
+        ).toUpperCase();
+
+
+    // Help Seekers only need the help application and their request status.
+    if (role !== "HELP_SEEKER") {
+        await loadCampaigns();
+        await loadImpactReports();
+    }
+
+
+    if (role === "DONOR") {
+
+        await loadDonations();
+
+    }
+
+
+    if (role === "VOLUNTEER") {
+
+        await loadBeneficiaries();
+
+        await loadVolunteers();
+
+    }
+
+
+    if (role === "ADMIN") {
+
+        await loadDonations();
+
+        await loadBeneficiaries();
+
+        await loadFundUtilization();
+
+        await loadVolunteers();
+
+        await loadUsers();
+
+    }
+
+
+    applyRoleAccess(role);
+
+}
+
+
+
+/* =====================================================
+   CAMPAIGNS
+===================================================== */
+
+
+async function loadCampaigns() {
+    try {
+        const response = await fetch("/api/campaigns");
+
+        if (!response.ok) {
+            throw new Error("Campaign API failed");
+        }
+
+        const campaigns = await response.json();
+
+        const container = document.getElementById("campaigns");
+        const donationSelect = document.getElementById("donationCampaign");
+        const fundSelect = document.getElementById("fundCampaign");
+        const beneficiarySelect = document.getElementById("beneficiaryCampaign");
+        const impactSelect = document.getElementById("impactCampaign");
+
+        donationSelect.innerHTML = '<option value="">Select Campaign</option>';
+        fundSelect.innerHTML = '<option value="">Select Campaign</option>';
+        beneficiarySelect.innerHTML = '<option value="">Select Campaign</option>';
+        impactSelect.innerHTML = '<option value="">Select Campaign</option>';
+
+        container.innerHTML = "";
+
+        let active = 0;
+
+        campaigns.forEach(campaign => {
+            const status = String(campaign.status || "").toUpperCase();
+            const isActive = status === "ACTIVE";
+
+            if (isActive) {
+                active++;
+            }
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <h3>${escapeHtml(campaign.title)}</h3>
+                <p>${escapeHtml(campaign.description || "")}</p>
+                <p><strong>Target:</strong> ${money(campaign.targetAmount)}</p>
+                <p><strong>Collected:</strong> ${money(campaign.collectedAmount)}</p>
+                <p><strong>Status:</strong> ${escapeHtml(status)}</p>
+            `;
+
+            // Admin can manually close an active campaign
+            if (isActive && currentUser && currentUser.role === "ADMIN") {
+                const closeButton = document.createElement("button");
+                closeButton.textContent = "Mark Completed";
+
+                closeButton.addEventListener("click", async () => {
+                    const confirmed = confirm(
+                        `Mark "${campaign.title}" as COMPLETED?`
+                    );
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    try {
+                        const updateResponse = await fetch(
+                            `/api/campaigns/${campaign.id}`,
+                            {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    status: "COMPLETED"
+                                })
+                            }
+                        );
+
+                        if (!updateResponse.ok) {
+                            throw new Error("Could not update campaign status");
+                        }
+
+                        alert("Campaign marked as COMPLETED.");
+                        await loadCampaigns();
+                    } catch (error) {
+                        console.error(error);
+                        alert("Campaign status update failed.");
+                    }
+                });
+
+                card.appendChild(closeButton);
+            }
+
+            container.appendChild(card);
+
+            // Only ACTIVE campaigns can be selected for new donations
+            if (isActive) {
+                const option = document.createElement("option");
+                option.value = campaign.id;
+                option.textContent =
+                    `${campaign.title} - ${money(campaign.collectedAmount)}`;
+
+                donationSelect.appendChild(option.cloneNode(true));
+            }
+
+            // Preserve campaign choices in existing management forms
+            const option = document.createElement("option");
+            option.value = campaign.id;
+            option.textContent =
+                `${campaign.title} - ${money(campaign.collectedAmount)}`;
+
+            fundSelect.appendChild(option.cloneNode(true));
+            beneficiarySelect.appendChild(option.cloneNode(true));
+            impactSelect.appendChild(option.cloneNode(true));
+        });
+
+        document.getElementById("activeCampaigns").innerText = active;
+
+    } catch (error) {
+        console.error("Campaign error:", error);
+    }
+}
+
+
+
+/* =====================================================
+   CREATE CAMPAIGN
+===================================================== */
+
+async function createCampaign() {
+
+    const title =
+        document.getElementById(
+            "campaignTitle"
+        ).value.trim();
+
+    const description =
+        document.getElementById(
+            "campaignDescription"
+        ).value.trim();
+
+    const targetAmount =
+        Number(
+            document.getElementById(
+                "campaignTargetAmount"
+            ).value
+        );
+
+    const status =
+        document.getElementById(
+            "campaignStatus"
+        ).value;
+
+    if (
+        !title ||
+        !description ||
+        !targetAmount ||
+        !status
+    ) {
+
+        alert(
+            "Please fill all required campaign fields."
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/campaigns",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        title:
+                            title,
+
+                        description:
+                            description,
+
+                        targetAmount:
+                            targetAmount,
+
+                        status:
+                            status
+
+                    })
+
+                }
+            );
+
+        if (!response.ok) {
+
+            const result =
+                await response.text();
+
+            alert(
+                "Failed to create campaign.\\n" +
+                result
+            );
+
+            return;
+
+        }
+
+        alert(
+            "Campaign created successfully!"
+        );
+
+        document.getElementById(
+            "campaignTitle"
+        ).value = "";
+
+        document.getElementById(
+            "campaignDescription"
+        ).value = "";
+
+        document.getElementById(
+            "campaignTargetAmount"
+        ).value = "";
+
+        document.getElementById(
+            "campaignStatus"
+        ).value = "ACTIVE";
+
+        await loadCampaigns();
+
+    }
+    catch(error) {
+
+        console.error(
+            "Create campaign error:",
+            error
+        );
+
+        alert(
+            "Failed to create campaign."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DONATIONS
+===================================================== */
+
+async function loadDonations() {
+    const container = document.getElementById("donationHistory");
+
+    try {
+        const response = await fetch("/api/donations");
+
+        if (!response.ok) {
+            throw new Error("Failed to load donations: " + response.status);
+        }
+
+        const donations = await response.json();
+        container.innerHTML = "";
+
+        if (!Array.isArray(donations) || donations.length === 0) {
+            container.innerHTML =
+                "<p class='empty'>No donation records found.</p>";
+            return;
+        }
+
+        let total = 0;
+
+        donations.forEach(donation => {
+            total += Number(donation.amount || 0);
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const campaignId =
+                donation.campaignId ??
+                donation.campaign?.id ??
+                "-";
+
+            card.innerHTML = `
+                <h3>Donation</h3>
+                <p><strong>Campaign ID:</strong> ${escapeHtml(String(campaignId))}</p>
+                <p><strong>Amount:</strong> ${money(donation.amount || 0)}</p>
+                <p><strong>Status:</strong> ${escapeHtml(String(donation.status || "N/A"))}</p>
+                <p><strong>Date:</strong> ${
+                    donation.donationDate
+                        ? new Date(donation.donationDate).toLocaleString("en-IN")
+                        : donation.createdAt
+                            ? new Date(donation.createdAt).toLocaleString("en-IN")
+                            : "N/A"
+                }</p>
+            `;
+
+            container.appendChild(card);
+        });
+
+        const totalElement = document.getElementById("totalDonations");
+        if (totalElement) {
+            totalElement.innerText = money(total);
+        }
+    } catch (error) {
+        console.error("Donation error:", error);
+        container.innerHTML =
+            "<p class='empty'>Unable to load donation history. Please check the browser console.</p>";
+    }
+}
+
+
+
+
+
+/* =====================================================
+   MAKE DONATION
+===================================================== */
+
+async function makeDonation() {
+
+    const campaignId =
+        document.getElementById(
+            "donationCampaign"
+        ).value;
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "donationAmount"
+            ).value
+        );
+
+
+    if (!campaignId || !amount) {
+
+        alert(
+            "Select campaign and enter amount."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/donations",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        campaignId:
+                            Number(campaignId),
+
+                        amount:
+                            amount,
+
+                        donorEmail:
+                            currentUser.email,
+
+                        status:
+                            "VERIFIED"
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            alert(
+                "Failed to make donation."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Donation successful!"
+        );
+
+
+        document.getElementById(
+            "donationAmount"
+        ).value = "";
+
+
+        await loadDonations();
+
+        await loadCampaigns();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to make donation."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   BENEFICIARIES
+===================================================== */
+
+async function loadBeneficiaries() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/beneficiaries"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Beneficiary API failed"
+            );
+
+        }
+
+
+        const beneficiaries =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "beneficiaries"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !beneficiaries ||
+            beneficiaries.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p class='empty'>No beneficiaries available.</p>";
+
+        }
+
+
+        beneficiaries.forEach(
+            beneficiary => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "card";
+
+
+                /*
+                   Different possible backend
+                   field names are handled here.
+                */
+
+                const contact =
+                    beneficiary.contact ??
+                    beneficiary.phone ??
+                    beneficiary.phoneNumber ??
+                    beneficiary.mobile ??
+                    "-";
+
+
+                const campaignId =
+                    beneficiary.campaignId ??
+                    beneficiary.campaign?.id ??
+                    beneficiary.campaign?.campaignId ??
+                    "-";
+
+
+                const details =
+                    beneficiary.details ??
+                    beneficiary.needDescription ??
+                    beneficiary.description ??
+                    beneficiary.need ??
+                    "-";
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHtml(
+                            beneficiary.name ||
+                            beneficiary.fullName ||
+                            "Beneficiary"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            Contact:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(contact)
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Campaign ID:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(campaignId)
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Details:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(details)
+                        )}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "totalBeneficiaries"
+        ).innerText =
+            beneficiaries.length;
+
+    }
+    catch(error) {
+
+        console.error(
+            "Beneficiary error:",
+            error
+        );
+
+        document.getElementById(
+            "beneficiaries"
+        ).innerHTML =
+            "<p class='empty'>Failed to load beneficiaries.</p>";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   ADD BENEFICIARY
+===================================================== */
+
+async function addBeneficiary() {
+
+    const name =
+        document.getElementById(
+            "beneficiaryName"
+        ).value.trim();
+
+
+    const contact =
+        document.getElementById(
+            "beneficiaryContact"
+        ).value.trim();
+
+
+    const campaignId =
+        document.getElementById(
+            "beneficiaryCampaign"
+        ).value;
+
+
+    const details =
+        document.getElementById(
+            "beneficiaryDetails"
+        ).value.trim();
+
+
+    if (
+        !name ||
+        !contact ||
+        !campaignId
+    ) {
+
+        alert(
+            "Please fill Name, Contact and Campaign."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/beneficiaries",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        name:
+                            name,
+
+                        phone:
+                            contact,
+
+                        campaignId:
+                            Number(campaignId),
+
+                        needDescription:
+                            details,
+
+                        status:
+                            "ACTIVE"
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const result =
+                await response.text();
+
+            alert(
+                "Failed to add beneficiary.\n" +
+                result
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Beneficiary added successfully!"
+        );
+
+
+        document.getElementById(
+            "beneficiaryName"
+        ).value = "";
+
+
+        document.getElementById(
+            "beneficiaryContact"
+        ).value = "";
+
+
+        document.getElementById(
+            "beneficiaryDetails"
+        ).value = "";
+
+
+        document.getElementById(
+            "beneficiaryCampaign"
+        ).value = "";
+
+
+        await loadBeneficiaries();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to add beneficiary."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FUND UTILIZATION
+===================================================== */
+
+async function loadFundUtilization() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/fund-utilization"
+            );
+
+
+        const records =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "fundHistory"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !records ||
+            records.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p class='empty'>No fund utilization records.</p>";
+
+            return;
+
+        }
+
+
+        records.forEach(
+            record => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "card";
+
+
+                const campaignId =
+                    record.campaignId ??
+                    record.campaign?.id ??
+                    "-";
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHtml(
+                            record.purpose ||
+                            "Fund Utilization"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            Campaign ID:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(campaignId)
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Amount Used:
+                        </strong>
+
+                        ${money(
+                            record.amount
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Purpose:
+                        </strong>
+
+                        ${escapeHtml(
+                            record.purpose ||
+                            ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Description:
+                        </strong>
+
+                        ${escapeHtml(
+                            record.description ||
+                            ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Date:
+                        </strong>
+
+                        ${
+                            record.utilizationDate
+                            ? new Date(
+                                record.utilizationDate
+                            ).toLocaleString("en-IN")
+                            : ""
+                        }
+
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "Fund utilization error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   ADD FUND UTILIZATION
+===================================================== */
+
+async function addFundUtilization() {
+
+    const campaignId =
+        document.getElementById(
+            "fundCampaign"
+        ).value;
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "fundAmount"
+            ).value
+        );
+
+
+    const purpose =
+        document.getElementById(
+            "fundPurpose"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "fundDescription"
+        ).value.trim();
+
+
+    if (
+        !campaignId ||
+        !amount ||
+        !purpose
+    ) {
+
+        alert(
+            "Please fill required fields."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/fund-utilization",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        campaignId:
+                            Number(campaignId),
+
+                        amount:
+                            amount,
+
+                        purpose:
+                            purpose,
+
+                        description:
+                            description
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            alert(
+                "Failed to add fund utilization."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Fund utilization added successfully!"
+        );
+
+
+        document.getElementById(
+            "fundAmount"
+        ).value = "";
+
+
+        document.getElementById(
+            "fundPurpose"
+        ).value = "";
+
+
+        document.getElementById(
+            "fundDescription"
+        ).value = "";
+
+
+        await loadFundUtilization();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to add fund utilization."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   IMPACT REPORTS
+===================================================== */
+
+async function loadImpactReports() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/impact-reports"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Impact report API failed"
+            );
+
+        }
+
+
+        const reports =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "impactReports"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !reports ||
+            reports.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p class='empty'>No impact reports found.</p>";
+
+            return;
+
+        }
+
+
+        reports.forEach(
+            report => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "card";
+
+
+                const campaignId =
+                    report.campaignId ??
+                    report.campaign?.id ??
+                    "-";
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHtml(
+                            report.title ||
+                            "Impact Report"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            Campaign ID:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(campaignId)
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Summary:
+                        </strong>
+
+                        ${escapeHtml(
+                            report.summary ||
+                            ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Beneficiaries Reached:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(
+                                report.beneficiariesReached ??
+                                0
+                            )
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Activities:
+                        </strong>
+
+                        ${escapeHtml(
+                            report.activities ||
+                            ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Date:
+                        </strong>
+
+                        ${
+                            report.reportDate
+                            ? new Date(
+                                report.reportDate
+                            ).toLocaleString("en-IN")
+                            : ""
+                        }
+
+                    </p>
+
+
+                    ${
+                        String(currentUser?.role || "")
+                            .toUpperCase() === "ADMIN"
+                        ? `
+                            <button
+                                class="danger"
+                                onclick="
+                                    deleteImpactReport(
+                                        ${report.id}
+                                    )
+                                ">
+                                Delete
+                            </button>
+                        `
+                        : ""
+                    }
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "Impact report error:",
+            error
+        );
+
+
+        document.getElementById(
+            "impactReports"
+        ).innerHTML =
+            "<p class='empty'>Failed to load impact reports.</p>";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CREATE IMPACT REPORT
+===================================================== */
+
+async function createImpactReport() {
+
+    const campaignId =
+        document.getElementById(
+            "impactCampaign"
+        ).value;
+
+
+    const title =
+        document.getElementById(
+            "impactTitle"
+        ).value.trim();
+
+
+    const summary =
+        document.getElementById(
+            "impactSummary"
+        ).value.trim();
+
+
+    const beneficiariesReached =
+        Number(
+            document.getElementById(
+                "impactBeneficiaries"
+            ).value
+        );
+
+
+    const activities =
+        document.getElementById(
+            "impactActivities"
+        ).value.trim();
+
+
+    if (
+        !campaignId ||
+        !title ||
+        !summary ||
+        !activities
+    ) {
+
+        alert(
+            "Please fill all required fields."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/impact-reports",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        campaignId:
+                            Number(campaignId),
+
+                        title:
+                            title,
+
+                        summary:
+                            summary,
+
+                        beneficiariesReached:
+                            beneficiariesReached,
+
+                        activities:
+                            activities
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const result =
+                await response.text();
+
+            alert(
+                "Failed to create impact report.\n" +
+                result
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Impact report created successfully!"
+        );
+
+
+        document.getElementById(
+            "impactCampaign"
+        ).value = "";
+
+
+        document.getElementById(
+            "impactTitle"
+        ).value = "";
+
+
+        document.getElementById(
+            "impactSummary"
+        ).value = "";
+
+
+        document.getElementById(
+            "impactBeneficiaries"
+        ).value = "";
+
+
+        document.getElementById(
+            "impactActivities"
+        ).value = "";
+
+
+        await loadImpactReports();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to create impact report."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   DELETE IMPACT REPORT
+===================================================== */
+
+async function deleteImpactReport(id) {
+
+    if (
+        !confirm(
+            "Delete this impact report?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/impact-reports/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            alert(
+                "Failed to delete impact report."
+            );
+
+            return;
+
+        }
+
+
+        await loadImpactReports();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to delete impact report."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   HELP REQUESTS
+===================================================== */
+
+async function submitHelpRequest() {
+    const name = document.getElementById("helpRequestName").value.trim();
+    const phone = document.getElementById("helpRequestPhone").value.trim();
+    const helpType = document.getElementById("helpRequestType").value;
+    const reason = document.getElementById("helpRequestReason").value.trim();
+    const details = document.getElementById("helpRequestDetails").value.trim();
+
+    if (!name || !phone || !helpType || !reason) {
+        alert("Please fill in name, phone, help type and reason.");
+        return;
+    }
+    if (!currentUser?.email) {
+        alert("Please log in again before submitting your request.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/help-requests", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name, email: currentUser.email, phone, helpType, reason, details
+            })
+        });
+        if (!response.ok) {
+            const message = await response.text();
+            alert("Failed to submit help request.\n" + message);
+            return;
+        }
+        alert("Help request submitted successfully. Status: PENDING");
+        document.getElementById("helpRequestPhone").value = "";
+        document.getElementById("helpRequestType").value = "";
+        document.getElementById("helpRequestReason").value = "";
+        document.getElementById("helpRequestDetails").value = "";
+        await loadMyHelpRequests();
+    } catch (error) {
+        console.error("Submit help request error:", error);
+        alert("Unable to submit help request. Check that the backend is running.");
+    }
+}
+
+function helpRequestCard(request, role) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const status = String(request.status || "PENDING").toUpperCase();
+    const actions = [];
+    if (role === "VOLUNTEER" && status === "PENDING") {
+        actions.push(`<label>Verification Notes</label><textarea id="verifyNotes-${request.id}" placeholder="Enter verification notes"></textarea><button class="warning" onclick="verifyHelpRequest(${Number(request.id)})">Verify Request</button>`);
+    }
+    if (role === "ADMIN" && status === "VERIFIED") {
+        actions.push(`<button onclick="approveHelpRequest(${Number(request.id)})">Approve</button> <button class="danger" onclick="rejectHelpRequest(${Number(request.id)})">Reject</button>`);
+    }
+    card.innerHTML = `
+        <h3>Help Request #${escapeHtml(request.id)}</h3>
+        <p><strong>Name:</strong> ${escapeHtml(request.name || "")}</p>
+        <p><strong>Email:</strong> ${escapeHtml(request.email || "")}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(request.phone || "")}</p>
+        <p><strong>Help Type:</strong> ${escapeHtml(request.helpType || "")}</p>
+        <p><strong>Reason:</strong> ${escapeHtml(request.reason || "")}</p>
+        <p><strong>Details:</strong> ${escapeHtml(request.details || "")}</p>
+        <p><strong>Status:</strong> ${escapeHtml(status)}</p>
+        ${request.verificationNotes ? `<p><strong>Verification Notes:</strong> ${escapeHtml(request.verificationNotes)}</p>` : ""}
+        ${request.rejectionReason ? `<p><strong>Rejection Reason:</strong> ${escapeHtml(request.rejectionReason)}</p>` : ""}
+        ${actions.join(" ")}
+    `;
+    return card;
+}
+
+async function loadHelpRequests() {
+    const container = document.getElementById("helpRequestsList");
+    if (!container) return;
+    container.innerHTML = "<p class='empty'>Loading help requests...</p>";
+    try {
+        const response = await fetch("/api/help-requests");
+        if (!response.ok) throw new Error("Help requests API returned " + response.status);
+        const requests = await response.json();
+        container.innerHTML = "";
+        if (!Array.isArray(requests) || requests.length === 0) {
+            container.innerHTML = "<p class='empty'>No help requests submitted yet.</p>";
+            return;
+        }
+        const role = String(currentUser?.role || "").toUpperCase();
+        requests.forEach(request => container.appendChild(helpRequestCard(request, role)));
+    } catch (error) {
+        console.error("Load help requests error:", error);
+        container.innerHTML = "<p class='error-message'>Could not load help requests. Check the backend and SecurityConfig.</p>";
+    }
+}
+
+async function loadMyHelpRequests() {
+    const container = document.getElementById("myHelpRequests");
+    if (!container || !currentUser?.email) return;
+    container.innerHTML = "<p class='empty'>Loading your requests...</p>";
+    try {
+        const response = await fetch("/api/help-requests/my?email=" + encodeURIComponent(currentUser.email));
+        if (!response.ok) throw new Error("My help requests API returned " + response.status);
+        const requests = await response.json();
+        container.innerHTML = "";
+        if (!Array.isArray(requests) || requests.length === 0) {
+            container.innerHTML = "<p class='empty'>You have not submitted any help requests yet.</p>";
+            return;
+        }
+        requests.forEach(request => container.appendChild(helpRequestCard(request, "HELP_SEEKER")));
+    } catch (error) {
+        console.error("Load my help requests error:", error);
+        container.innerHTML = "<p class='error-message'>Could not load your requests. Check the backend and SecurityConfig.</p>";
+    }
+}
+
+async function verifyHelpRequest(id) {
+    const notes = document.getElementById(`verifyNotes-${id}`)?.value.trim() || "";
+    if (!notes) { alert("Please enter verification notes."); return; }
+    try {
+        const response = await fetch(`/api/help-requests/${id}/verify`, {
+            method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ notes })
+        });
+        if (!response.ok) { alert("Could not verify request: " + await response.text()); return; }
+        alert("Request verified successfully.");
+        await loadHelpRequests();
+    } catch (error) { console.error(error); alert("Failed to verify request."); }
+}
+
+async function approveHelpRequest(id) {
+    if (!confirm("Approve this verified help request?")) return;
+    try {
+        const response = await fetch(`/api/help-requests/${id}/approve`, { method: "PUT" });
+        if (!response.ok) { alert("Could not approve request: " + await response.text()); return; }
+        alert("Help request approved.");
+        await loadHelpRequests();
+    } catch (error) { console.error(error); alert("Failed to approve request."); }
+}
+
+async function rejectHelpRequest(id) {
+    const reason = prompt("Enter the reason for rejection:");
+    if (reason === null) return;
+    if (!reason.trim()) { alert("Rejection reason is required."); return; }
+    try {
+        const response = await fetch(`/api/help-requests/${id}/reject`, {
+            method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reason: reason.trim() })
+        });
+        if (!response.ok) { alert("Could not reject request: " + await response.text()); return; }
+        alert("Help request rejected.");
+        await loadHelpRequests();
+    } catch (error) { console.error(error); alert("Failed to reject request."); }
+}
+
+
+/* =====================================================
+   VOLUNTEERS
+===================================================== */
+
+
+async function loadVolunteers() {
+    try {
+        const response = await fetch("/api/volunteers");
+
+        if (!response.ok) {
+            throw new Error("Volunteer API failed");
+        }
+
+        const volunteers = await response.json();
+        const container = document.getElementById("volunteers");
+
+        container.innerHTML = "";
+
+        // Check the currently logged-in user's role.
+        const isAdmin =
+    typeof currentUser !== "undefined" &&
+    String(currentUser?.role || "").toUpperCase() === "ADMIN";
+        if (!volunteers || volunteers.length === 0) {
+            container.innerHTML =
+                "<p class='empty'>No volunteers available.</p>";
+        }
+
+        (volunteers || []).forEach(volunteer => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <h3>${escapeHtml(volunteer.name || "")}</h3>
+                <p><strong>Email:</strong> ${escapeHtml(volunteer.email || "")}</p>
+                <p><strong>Phone:</strong> ${escapeHtml(volunteer.phone || "")}</p>
+                <p><strong>Address:</strong> ${escapeHtml(volunteer.address || "")}</p>
+                <p><strong>Skills:</strong> ${escapeHtml(volunteer.skills || "")}</p>
+                <p><strong>Availability:</strong> ${escapeHtml(volunteer.availability || "")}</p>
+                <p><strong>Status:</strong> ${escapeHtml(volunteer.status || "PENDING_VERIFICATION")}</p>
+                <div class="volunteer-actions"></div>
+            `;
+
+            const actions = card.querySelector(".volunteer-actions");
+
+            if (isAdmin &&
+                String(volunteer.status || "").toUpperCase() === "PENDING_VERIFICATION") {
+
+                const approveButton = document.createElement("button");
+                approveButton.textContent = "Approve";
+                approveButton.onclick = () =>
+                    updateVolunteerStatus(volunteer.id, "approve");
+
+                const rejectButton = document.createElement("button");
+                rejectButton.textContent = "Reject";
+                rejectButton.onclick = () =>
+                    updateVolunteerStatus(volunteer.id, "reject");
+
+                actions.append(approveButton, rejectButton);
+            }
+
+            container.appendChild(card);
+        });
+
+        const total = document.getElementById("totalVolunteers");
+        if (total) {
+            total.innerText = (volunteers || []).length;
+        }
+    } catch (error) {
+        console.error("Volunteer error:", error);
+        document.getElementById("volunteers").innerHTML =
+            "<p class='empty'>Unable to load volunteers.</p>";
+    }
+}
+
+async function updateVolunteerStatus(id, action) {
+    try {
+        const response = await fetch(`/api/volunteers/${id}/${action}`, {
+            method: "PUT"
+        });
+
+        const message = await response.text();
+
+        if (!response.ok) {
+            alert("Failed: " + message);
+            return;
+        }
+
+        alert(message);
+        await loadVolunteers();
+    } catch (error) {
+        console.error("Volunteer status update error:", error);
+        alert("Could not update volunteer status.");
+    }
+}
+
+/* =====================================================
+   USER MANAGEMENT
+===================================================== */
+
+async function loadUsers() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/users"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "User API failed"
+            );
+
+        }
+
+
+        const users =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "users"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !users ||
+            users.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p class='empty'>No users available.</p>";
+
+            return;
+
+        }
+
+
+        users.forEach(
+            user => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "card";
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHtml(
+                            user.name ||
+                            ""
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            Email:
+                        </strong>
+
+                        ${escapeHtml(
+                            user.email ||
+                            ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Role:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(
+                                user.role ||
+                                ""
+                            ).toUpperCase()
+                        )}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "User management error:",
+            error
+        );
+
+
+        document.getElementById(
+            "users"
+        ).innerHTML =
+            "<p class='empty'>No users available.</p>";
+
+    }
+
+}
+
+
+</script>
+
+</body>
+
+</html>

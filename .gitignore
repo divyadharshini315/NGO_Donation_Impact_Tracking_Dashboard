@@ -43,3 +43,8 @@ Thumbs.db
 *.jar
 *.war
 *.ear
+# Local database credentials
+ngo-donation-dashboard/src/main/resources/application.properties
+.env
+.env.*
+!.env.example

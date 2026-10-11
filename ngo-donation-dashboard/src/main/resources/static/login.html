@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NGO Login</title>
+</head>
+<body>
+
+    <h2>NGO Donation & Impact Tracking Dashboard</h2>
+
+    <h3>Login</h3>
+
+    <input type="email" id="email" placeholder="Email">
+    <br><br>
+
+    <input type="password" id="password" placeholder="Password">
+    <br><br>
+
+    <button onclick="login()">Login</button>
+
+    <p id="message"></p>
+
+    <script>
+        function login() {
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Invalid email or password");
+                }
+
+                return response.json();
+            })
+            .then(user => {
+
+                document.getElementById("message").innerText =
+                    "Login successful! Welcome " + user.name;
+
+                setTimeout(() => {
+                    window.location.href = "/index.html";
+                }, 1000);
+
+            })
+            .catch(error => {
+
+                document.getElementById("message").innerText =
+                    error.message;
+
+            });
+        }
+    </script>
+
+</body>
+</html>
